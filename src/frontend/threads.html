@@ -1,0 +1,52 @@
+res.body = <<-HTML
+      <html>
+      <head>
+        <title>#{thread[:title]}</title>
+      </head>
+
+      <style>#{File.read("src/frontend/style.css")}</style>
+
+      <body>
+        <header class="header">
+          <h1>OP: #{thread[:title]} (#{thread[:section]})</h1>
+        </header>
+        <main>
+          <section>
+            <h2>Комментарии:</h2>
+            <ul>
+              #{thread[:comments].map { |comment| "<li><span style='color: #{random_color};'>Аноним:<br></span>#{convert_links_to_html(comment)}</li>" }.join}
+            </ul>
+            <form action="#{section}thread/#{thread_id}" method="post" onsubmit="return validateComment()">
+              <textarea name="comment" placeholder="Ваш комментарий" required rows="4" style="width: 100%;"></textarea>
+            </form>
+
+            <script>
+              function validateComment() {
+                const textarea = document.querySelector('textarea[name="comment"]');
+                if (textarea.value.trim() === '') {
+                  alert('Комментарий не может быть пустым.');
+                  return false;
+                }
+                return true; // Allow form submission
+              }
+
+              // Обработчик события для отправки формы при нажатии Enter и добавления новой строки при Shift + Enter.
+              document.querySelector('textarea[name="comment"]').addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                  event.preventDefault(); // Prevent default behavior (new line)
+                  this.form.submit(); // Submit the form
+                } else if (event.shiftKey && event.key === 'Enter') {
+                  event.preventDefault(); // Prevent form submission
+                  this.value += '\\n'; // Add a new line
+                }
+              });
+            </script>
+          </section>
+          <a href="/" class="theme-button">Назад</a>
+          <hr>
+          <footer><a href="/rules">Правила</a> <br>Y0d9 — Борда <a href="https://z3nn1x.t.me">Zennix-а</a>.</footer>
+         </main>
+       
+        </body>
+      </html>
+HTML

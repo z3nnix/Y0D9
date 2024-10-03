@@ -1,0 +1,5 @@
+require_relative "utf8.rb"
+require_relative "color.rb"
+require_relative "fixHTMLintegration.rb"
+require_relative "humane.rb"
+require_relative "lastthread.rb"

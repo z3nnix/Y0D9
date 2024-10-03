@@ -1,0 +1,31 @@
+res.body = <<-HTML
+  <html>
+  <head>
+    <title>Правила в йоде </title>
+  </head>
+
+  <style>#{File.read("src/frontend/style.css")}</style>
+
+  <body>
+    <header class="namelogo">
+      <h1>ПРАВИЛА</h1>
+      <a href="https://new.donatepay.ru/@zennix"><h2>🪙 Стань героем свободы слова!</h2> </a>
+    </header>
+    <main>
+    <hr>
+    <ul>
+      <li>#{convert_links_to_html(File.read("rules.txt"))}</li>
+    </ul>
+    <hr>
+    <footer><a href="/rules">Правила</a> <br>Y0d9 — Борда <a href="https://z3nn1x.t.me">Zennix-а</a>.</footer>
+    </main>
+
+    <script>
+      function validateForm() {
+        return true; // Возвращаем true для отправки формы при нажатии Enter.
+      }
+    </script>
+
+  </body>
+  </html>
+  HTML

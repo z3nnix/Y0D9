@@ -1,0 +1,54 @@
+res.body = <<-HTML
+    <html>
+    <head>
+      <title>Y0d9</title>
+    </head>
+
+    <style>#{File.read("src/frontend/style.css")}</style>
+
+    <body>
+      <header class="namelogo">
+        <h1>Y0d9</h1>
+        <a href="https://new.donatepay.ru/@zennix"><h2>🪙 Стань героем свободы слова!</h2> </a>
+      </header>
+      <main>
+      <h1>Статистика:<h1>
+      <h4>Засрали диск оператору: #{human_readable_size('threads.json')} <br>
+      Всего тредов: #{last_id = 1 + last_thread_id('threads.json'); last_id}
+      </h4>
+        <section>
+          <h2>Создать новый тред</h2>
+          <form action="/" method="post" onsubmit="return validateForm()">
+            <input type="text" name="title" placeholder="Название треда" required>
+            
+            <select name="section" class="select-css" required>
+              <option value="">Выберите раздел</option>
+              #{Forum::SECTIONS.map { |sec| "<option value='#{sec}'>#{sec}</option>" }.join}
+          </select>
+          
+          <!-- Button for publishing the thread -->
+          <button class="button-89" role="button" type="submit">Опубликовать тред</button>
+          
+
+          </form>
+        </section>
+        <section>
+          <h2>Треды:</h2>
+          <ul class="menu-main">
+            #{sorted_threads.map { |thread| "<li class='nav__item'><a href='#{thread[:section]}thread/#{thread[:id]}'>#{thread[:title]} (#{thread[:section]})</a></li>" }.join}
+          </ul>        
+        </section>
+        <br>
+        <hr>
+        <footer><a href="/rules">Правила</a> <br>Y0d9 — Борда <a href="https://z3nn1x.t.me">Zennix-а</a>.</footer>
+      </main>
+
+      <script>
+        function validateForm() {
+          return true; // Возвращаем true для отправки формы при нажатии Enter.
+        }
+      </script>
+
+    </body>
+    </html>
+HTML

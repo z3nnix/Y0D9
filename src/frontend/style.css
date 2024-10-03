@@ -1,0 +1,240 @@
+/* Подключение шрифта Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+/* Основные стили */
+body {
+    font-family: 'Montserrat', sans-serif; /* Новый шрифт */
+    background-color: #121212; /* Темный фон */
+    color: #e0e0e0; /* Светлый текст */
+    margin: 0;
+    padding: 20px;
+}
+
+/* Стили для input и select */
+input[type="text"],
+textarea,
+select {
+    -webkit-appearance: none; /* Убираем стандартное оформление для select */
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+
+    background-color: #333; /* Темный фон */
+    color: #fff; /* Белый текст */
+    border: 1px solid #555; /* Темная рамка */
+    border-radius: 5px;
+    padding: 10px; /* Отступы внутри элементов */
+    width: calc(100% - 22px); /* Ширина с учетом отступов и границ */
+    cursor: pointer;
+    box-sizing: border-box; /* Учитываем отступы и границы в ширине */
+    font-size: 16px; /* Одинаковый размер шрифта */
+}
+
+/* Увеличиваем отступ снизу для input */
+input[type="text"] {
+    margin-bottom: 30px; /* Увеличьте значение по вашему усмотрению */
+}
+
+/* Можно также добавить отступ сверху для select */
+select {
+    margin-top: 1; /* Увеличьте значение по вашему усмотрению */
+}
+
+/* Стили для focus состояния */
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #777; /* Светлее при фокусе */
+}
+
+/* Стили для опций внутри select */
+select option {
+    background-color: #333; /* Темный фон для опций */
+    color: #fff; /* Белый текст для опций */
+}
+
+/* Заголовки */
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрирование по горизонтали */
+    justify-content: center; /* Центрирование по вертикали */
+    height: 100px; /* Высота хедера */
+}
+
+h1, h2 {
+    color: #ffffff; /* Белый текст для заголовков */
+}
+
+/* Основное содержимое */
+main {
+    max-width: 800px; /* Максимальная ширина для основного контента */
+    margin: auto; /* Центрирование контента */
+}
+
+/* Стили для форм */
+form {
+    margin-bottom: 20px; /* Отступ снизу для форм */
+}
+
+input[type="submit"] {
+    background-color: #4CAF50; /* Зеленая кнопка */
+    color: white; /* Белый текст на кнопке */
+    border: none; /* Без рамки */
+    padding: 10px 15px; /* Отступы внутри кнопки */
+    cursor: pointer; /* Указатель при наведении */
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049; /* Темнее при наведении */
+}
+
+/* Стили для списка тредов и комментариев */
+.menu-main {
+    list-style-type: none; /* Убираем маркеры списка */
+    padding-left: 0; /* Убираем отступ слева */
+}
+
+.nav__item {
+    background-color: #1e1e1e; /* Темный фон для элементов списка */
+    border: 1px solid #444; /* Темная рамка вокруг элемента списка */
+    margin-bottom: 10px; /* Отступ между элементами списка */
+    padding: 10px; /* Отступ внутри элемента списка */
+}
+
+.nav__item a {
+    text-decoration: none; /* Убираем подчеркивание у ссылок в меню */
+    color: #ffffff; /* Цвет ссылок в меню (ярко-голубой) */
+}
+
+.nav__item a:hover {
+   text-decoration: none; /* Убираем подчеркивание при наведении на ссылку в меню */
+}
+
+/* Стили для комментариев и списков с ярко-голубыми ссылками и хештегами */
+ul {
+   list-style-type: none;
+}
+
+li {
+   margin-bottom: 10px; /* Отступ между комментариями */
+}
+
+li a {
+   color: #00bfff; /* Ярко-голубой цвет ссылок в комментариях и хештегах */
+   text-decoration: none; /* Убираем подчеркивание у ссылок в комментариях и хештегах*/
+}
+
+li a:hover {
+   text-decoration: none; /* Убираем подчеркивание при наведении на ярко-голубые ссылки в комментариях и хештегах*/
+}
+
+/* Стиль для кнопки "Назад" */
+.theme-button {
+   display: inline-block;
+   background-color: #444; /* Темный фон для кнопки "Назад" */
+   color: white;
+   padding: 10px 15px;
+   text-decoration: none;
+}
+
+.theme-button:hover {
+   background-color: #555; /* Темнее при наведении на кнопку "Назад" */
+}
+
+/* Стиль для ошибок и сообщений о статусе */
+h1.error, h2.error {
+   color:red; /* Красный цвет для ошибок */
+}
+
+/* Логотип с названием сайта */ 
+.namelogo h1 {
+   color:#43e64b;
+   display:flex;
+   flex-direction:center;
+   align-items:center;
+   justify-content:center;
+}
+
+.namelogo h2 {
+   display:flex;
+   flex-direction:center;
+   align-items:center;
+   justify-content:center;
+}
+
+.namelogo a {
+   text-decoration:none
+}
+
+form {
+   gap:20px;
+}
+
+/* Стили для обработки `` и > */
+
+blockquote {
+   border-left:4px solid #00bfff;
+   padding-left:10px;
+   margin-left:0;
+   color:#e0e0e0;
+}
+
+code {
+   background-color:#333;
+   color:#00ff00;
+   padding:2px 4px;
+   border-radius:4px;
+}
+
+
+/* Стили для футера */
+footer {
+    color: #e0e0e0; /* Светлый текст */
+    text-align: center; /* Центрирование текста */
+    padding: 20px; /* Отступы внутри футера */
+    position: relative; /* Относительное позиционирование */
+    bottom: 0; /* Прикрепление к низу страницы */
+    width: 100%; /* Полная ширина */
+}
+
+/* Стили для ссылок в футере */
+footer a {
+    color: #00bfff; /* Ярко-голубой цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+footer a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+/* Стили для текста в футере */
+footer p {
+    margin: 5px 0; /* Отступы сверху и снизу для параграфов */
+}
+
+/* Дополнительные стили для иконок социальных сетей (если есть) */
+.footer-icons {
+    display: flex; /* Гибкое отображение для иконок */
+    justify-content: center; /* Центрирование иконок */
+    gap: 15px; /* Промежутки между иконками */
+}
+
+/* Стили для горизонтальной линии hr */
+hr {
+    border: none; /* Убираем стандартные стили */
+    height: 2px; /* Высота линии */
+    background-color: #ffffff; /* Цвет линии */
+    width: 300px; /* Фиксированная ширина линии */
+    border-radius: 5px; /* Закругленные углы */
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    color: #3fdb44;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
