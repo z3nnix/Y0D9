@@ -1,7 +1,7 @@
 class Forum
   attr_accessor :threads
 
-  SECTIONS = %w[/b/ /m/ /tech/ /art/]
+  SECTIONS = %w[/b/ /m/ /tech/ /art/] # Valid sections for threads
 
   COMMON_RUSSIAN_WORDS = %w[и в не на с что я он она это как да ты был бы все]
   
@@ -13,6 +13,24 @@ class Forum
   end
 
   def add_thread(title, section)
+    # Проверяем на наличие валидного тикера (раздела)
+    unless valid_section?(section)
+      puts "Ошибка: Неверный раздел '#{section}'. Доступные разделы: #{SECTIONS.join(', ')}." # Отладочный вывод
+      return
+    end
+
+    # Проверяем на наличие уже существующего треда в этом разделе
+    if thread_exists_in_section?(section)
+      puts "Ошибка: В этом разделе уже существует тред. Нельзя создавать ветку в ветке." # Отладочный вывод
+      return
+    end
+
+    # Проверяем на спам перед добавлением треда
+    if thread_spam_detected?(title)
+      puts "Тред с заголовком '#{title}' заблокирован как спам." # Отладочный вывод
+      return
+    end
+
     id = @threads.length
     @threads << { id: id, title: title, section: section, comments: [], last_active: Time.now.iso8601 }
     message = "🟢 *Yoda Alert!*\n\nБыл создан новый тред - #{title} (#{section})\n\nhttps://dassie-moral-gator.ngrok-free.app#{section}thread/#{id}\n\n@Y0D9ch"
@@ -54,6 +72,14 @@ class Forum
     end
   end
 
+  def valid_section?(section)
+    SECTIONS.include?(section) # Проверяем наличие раздела в доступных секциях
+  end
+
+  def thread_exists_in_section?(section)
+    @threads.any? { |thread| thread[:section] == section } # Проверяем наличие треда в указанном разделе
+  end
+
   def spam_detected?(thread_index, comment)
     normalized_comment = comment.downcase # Приводим комментарий к нижнему регистру
 
@@ -68,12 +94,47 @@ class Forum
     end
 
     # Проверка на наличие черных слов и паттернов спама
-    if contains_blacklisted_words?(normalized_comment) || floating_point_spam?(normalized_comment) || repeated_character?(normalized_comment) || contains_repeated_patterns?(normalized_comment) || floating_point_with_text?(normalized_comment)
+    if contains_blacklisted_words?(normalized_comment) || floating_point_spam?(normalized_comment) || repeated_character?(normalized_comment) || contains_repeated_patterns?(normalized_comment) || floating_point_with_text?(normalized_comment) || contains_mixed_case_spam?(comment) || contains_uuid?(comment)
       handle_spam_alert(thread_index)
       return true
     end
     
     false 
+  end
+  
+  def thread_spam_detected?(title)
+    normalized_title = title.downcase # Приводим заголовок к нижнему регистру
+    
+    return false if contains_url?(normalized_title) # Игнорируем заголовки с URL
+    
+    # Проверка на наличие черных слов и паттернов спама в заголовке
+    if contains_blacklisted_words?(normalized_title) || contains_mixed_case_spam?(title) || contains_uuid?(title)
+      return true
+    end
+    
+    false 
+  end
+
+  def contains_uuid?(comment)
+    uuid_pattern = /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i
+    
+    comment.match?(uuid_pattern)
+  end
+
+  def contains_mixed_case_spam?(comment)
+    mixed_case_pattern = /(?=.*[A-Za-z])(?=.*[А-Яа-я])(?=.*[A-Z])(?=.*[а-я])/
+    
+    return true if comment.match?(mixed_case_pattern)
+
+    mixed_case_repetitive_pattern = /([a-zA-Zа-яА-ЯёЁ]{2,})/i
+    
+    comment.scan(mixed_case_repetitive_pattern).each do |word|
+      if word.first.downcase != word.first && word.first.upcase != word.first
+        return true
+      end
+    end
+    
+    false
   end
 
   def handle_spam_alert(thread_index)
@@ -81,7 +142,6 @@ class Forum
 
     last_spam_alert_time = @threads[thread_index][:last_spam_alert_sent]
     
-    # Приводим last_spam_alert_time к объекту Time, если это строка
     last_spam_alert_time = Time.parse(last_spam_alert_time) if last_spam_alert_time.is_a?(String)
 
     if last_spam_alert_time.nil? || (current_time - last_spam_alert_time > 300)
@@ -97,7 +157,6 @@ class Forum
   end
 
   def contains_url?(comment)
-    # Проверяем наличие URL в комментарии (нечувствительно к регистру)
     comment.match?(/https?:\/\/[\S]+/) || comment.match?(/www\.[\S]+/)
   end
 
@@ -128,12 +187,10 @@ class Forum
   end
   
   def contains_repeated_patterns?(comment)
-    # Проверка на наличие повторяющихся паттернов (например, "abcabc" или "123123")
     comment.match?(/(.+)\1/)
   end
   
   def floating_point_with_text?(comment)
-    # Проверяем наличие чисел с плавающей запятой рядом с текстом (например, "0.631464 РЕДВИЖН")
     comment.match?(/\d+\.\d+\s+[A-Za-zА-Яа-я]+/)
   end
 

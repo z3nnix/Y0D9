@@ -4,10 +4,14 @@ def handle_thread_request(req, res, forum_instance, section)
   thread_id = req.path.split('/').last.to_i
   
   if req.request_method == 'POST'
-    comment = URI.decode_www_form(req.body).to_h['comment'].strip
-    unless comment.empty?
+    # Decode the request body and safely access the 'comment' key
+    params = URI.decode_www_form(req.body).to_h
+    comment = params['comment'] ? params['comment'].strip : nil
+
+    unless comment.nil? || comment.empty?
       forum_instance.add_comment(thread_id, comment)
     end
+
     res.set_redirect(WEBrick::HTTPStatus::SeeOther, "#{section}thread/#{thread_id}")
     return
   end
